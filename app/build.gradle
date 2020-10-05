@@ -22,6 +22,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'androidx.navigation.safeargs'
 
+apply plugin: "android.arch.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
+
 android {
     compileSdkVersion 30
     buildFeatures {
@@ -63,4 +65,5 @@ dependencies {
     // Navigation
     implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
     implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }
