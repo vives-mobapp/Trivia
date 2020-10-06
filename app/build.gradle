@@ -22,7 +22,7 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'androidx.navigation.safeargs'
 
-apply plugin: "android.arch.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
+//apply plugin: "android.arch.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
 
 android {
     compileSdkVersion 30
