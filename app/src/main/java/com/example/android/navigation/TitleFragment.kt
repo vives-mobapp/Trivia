@@ -9,31 +9,22 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.android.navigation.databinding.FragmentTitleBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TitleFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TitleFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                                   savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val binding: FragmentTitleBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_title, container, false)
-        binding.playButton.setOnClickListener { view: View ->
-            view.findNavController().navigate(R.id.action_titleFragment2_to_gameFragment)
-        }
         setHasOptionsMenu(true)
+
+        binding.q1ScoreTv.text = formatScore("Radio Button", MainActivity.Scores.radio_score, MainActivity.Scores.radio_max)
+        binding.q2ScoreTv.text = formatScore("Edit Text", MainActivity.Scores.edittext_score, MainActivity.Scores.edittext_max)
+
         return binding.root
+    }
+
+    private fun formatScore(quiz: String, score: Int, max: Int) : String {
+        return if (score > -1) "You have scored ${score}/${max} on quiz $quiz" else "You have not yet played the $quiz quiz"
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

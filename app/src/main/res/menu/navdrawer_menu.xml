@@ -9,4 +9,10 @@
         android:id="@+id/aboutFragment"
         android:icon="@drawable/android"
         android:title="@string/about" />
+    <item
+        android:id="@+id/radioButtonQuizFragment"
+        android:title="RadioButton" />
+    <item
+        android:id="@+id/editTextQuizFragment"
+        android:title="EditText" />
 </menu>

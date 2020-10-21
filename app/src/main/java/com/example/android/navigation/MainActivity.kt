@@ -26,7 +26,18 @@ import com.example.android.navigation.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    var RADIO_QUIZ = "radio_quiz"
+    var EDITTEXT_QUIZ = "edittext_quiz"
+    var SCORE = "score"
+
     private lateinit var drawerLayout: DrawerLayout
+
+    companion object Scores {
+        var radio_score = -1
+        var radio_max = 0
+        var edittext_score = -1
+        var edittext_max = 0
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +45,20 @@ class MainActivity : AppCompatActivity() {
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         drawerLayout = binding.drawerLayout
 
+        if (savedInstanceState != null) {
+            Scores.radio_score = savedInstanceState.getInt(RADIO_QUIZ)
+            Scores.edittext_score = savedInstanceState.getInt(EDITTEXT_QUIZ)
+        }
+
         val navController = findNavController(R.id.myNavHostFragment)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(RADIO_QUIZ, Scores.radio_score)
+        outState.putInt(EDITTEXT_QUIZ, Scores.edittext_score)
     }
 
     override fun onSupportNavigateUp(): Boolean {

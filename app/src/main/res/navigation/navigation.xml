@@ -12,13 +12,16 @@
         tools:layout="@layout/fragment_title" >
         <action
             android:id="@+id/action_titleFragment2_to_gameFragment"
-            app:destination="@id/gameFragment" />
+            app:destination="@id/radioButtonQuizFragment" />
+        <action
+            android:id="@+id/action_titleFragment2_to_editTextQuizFragment2"
+            app:destination="@id/editTextQuizFragment" />
     </fragment>
     <fragment
-        android:id="@+id/gameFragment"
-        android:name="com.example.android.navigation.GameFragment"
-        android:label="fragment_game"
-        tools:layout="@layout/fragment_game" >
+        android:id="@+id/radioButtonQuizFragment"
+        android:name="com.example.android.navigation.RadioButtonQuizFragment"
+        android:label="fragment_radiobuttonquiz"
+        tools:layout="@layout/fragment_radiobuttonquiz">
         <action
             android:id="@+id/action_gameFragment_to_gameOverFragment2"
             app:destination="@id/gameOverFragment2"
@@ -26,12 +29,12 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_in_right"
-            app:popUpTo="@id/gameFragment"
+            app:popUpTo="@id/radioButtonQuizFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_gameFragment_to_gameWonFragment"
             app:destination="@id/gameWonFragment"
-            app:popUpTo="@id/gameFragment"
+            app:popUpTo="@id/radioButtonQuizFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -41,9 +44,12 @@
         tools:layout="@layout/fragment_game_over" >
         <action
             android:id="@+id/action_gameOverFragment2_to_gameFragment"
-            app:destination="@id/gameFragment"
+            app:destination="@id/radioButtonQuizFragment"
             app:popUpTo="@id/titleFragment2"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_gameOverFragment2_to_editTextQuizFragment2"
+            app:destination="@id/editTextQuizFragment" />
     </fragment>
     <fragment
         android:id="@+id/gameWonFragment"
@@ -52,13 +58,16 @@
         tools:layout="@layout/fragment_game_won" >
         <action
             android:id="@+id/action_gameWonFragment_to_gameFragment"
-            app:destination="@id/gameFragment" />
+            app:destination="@id/radioButtonQuizFragment" />
         <argument
             android:name="numQuestions"
             app:argType="integer" />
         <argument
             android:name="numCorrect"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_gameWonFragment_to_editTextQuizFragment2"
+            app:destination="@id/editTextQuizFragment" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
@@ -70,4 +79,20 @@
         android:name="com.example.android.navigation.RulesFragment"
         android:label="fragment_rules"
         tools:layout="@layout/fragment_rules" />
+    <fragment
+        android:id="@+id/editTextQuizFragment"
+        android:name="com.example.android.navigation.EditTextQuizFragment"
+        android:label="fragment_edittextquiz"
+        tools:layout="@layout/fragment_edittextquiz" >
+        <action
+            android:id="@+id/action_editTextQuizFragment2_to_gameWonFragment"
+            app:destination="@id/gameWonFragment"
+            app:popUpTo="@id/editTextQuizFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_editTextQuizFragment2_to_gameOverFragment2"
+            app:destination="@id/gameOverFragment2"
+            app:popUpTo="@id/editTextQuizFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
