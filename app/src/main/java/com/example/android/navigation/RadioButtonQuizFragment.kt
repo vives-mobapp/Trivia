@@ -56,6 +56,7 @@ class RadioButtonQuizFragment : QuizFragment() {
         return binding.root
     }
 
+    // TODO: separate views from data
     protected fun handleCheck(view: View) {
         MainActivity.Scores.radio_score = questionIndex
         val checkedId = binding.questionRadioGroup.checkedRadioButtonId

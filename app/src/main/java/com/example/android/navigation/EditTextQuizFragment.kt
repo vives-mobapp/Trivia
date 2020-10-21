@@ -63,6 +63,7 @@ class EditTextQuizFragment : QuizFragment() {
         imm.hideSoftInputFromWindow(view!!.windowToken, 0)
     }
 
+    // TODO: separate views from data
     protected fun handleCheck(view: View) {
         hideKeyboard()
 

@@ -71,6 +71,8 @@ class Timer(start: Int, lifecycle: Lifecycle, view: TextView, stopRunnable: Runn
 
             if (secondsCount <= 0) {
                 stopTimer()
+
+                // TODO: remove stopRunnable and use LiveData instead!
                 stopRunnable.run()
             }
 
