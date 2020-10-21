@@ -94,6 +94,7 @@ class RadioButtonQuizFragment : QuizFragment() {
         findNavController().navigate(RadioButtonQuizFragmentDirections.actionGameFragmentToGameOverFragment2(QuizFragment.Names.radiobutton))
     }
 
+    // Kan in super klasse geplaatst worden want code is exact aan die in radiobuttonquizfragment. Maar is nu niet nodig.
     fun restartTimer() {
         if (timer != null) {
             timer?.stopTimer()

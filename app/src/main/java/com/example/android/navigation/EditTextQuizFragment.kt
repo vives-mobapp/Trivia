@@ -57,11 +57,14 @@ class EditTextQuizFragment : QuizFragment() {
         return binding.root
     }
 
-
-    protected fun handleCheck(view: View) {
+    fun hideKeyboard() {
         // Hide keyboard.
         val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+        imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+    }
+
+    protected fun handleCheck(view: View) {
+        hideKeyboard()
 
         MainActivity.Scores.edittext_score = questionIndex
 
@@ -77,6 +80,7 @@ class EditTextQuizFragment : QuizFragment() {
                     binding.invalidateAll()
                 } else {
                     // We've won!  Navigate to the gameWonFragment.
+                    hideKeyboard()
                     view.findNavController().navigate(EditTextQuizFragmentDirections.actionEditTextQuizFragment2ToGameWonFragment(numQuestions, questionIndex, QuizFragment.Names.edittext))
                 }
             } else {
@@ -85,13 +89,20 @@ class EditTextQuizFragment : QuizFragment() {
         } else {
             Toast.makeText(this.context, "No blank answers allowed.", Toast.LENGTH_SHORT).show()
         }
+        binding.quizEditText.text.clear()
+
     }
 
     fun lost() {
+        hideKeyboard()
         findNavController().navigate(EditTextQuizFragmentDirections.actionEditTextQuizFragment2ToGameOverFragment2(QuizFragment.Names.edittext))
     }
 
+    // Kan in super klasse geplaatst worden want code is exact aan die in radiobuttonquizfragment. Maar is nu niet nodig.
     fun restartTimer() {
+        if (timer != null) {
+            timer?.stopTimer()
+        }
         timer = Timer(15, lifecycle, binding.timerTextView,  Runnable {
             lost()
         })
