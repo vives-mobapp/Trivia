@@ -49,7 +49,11 @@
             app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_gameOverFragment2_to_editTextQuizFragment2"
-            app:destination="@id/editTextQuizFragment" />
+            app:destination="@id/editTextQuizFragment"
+            app:popUpTo="@id/titleFragment2" />
+        <argument
+            android:name="quizFrom"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/gameWonFragment"
@@ -58,7 +62,8 @@
         tools:layout="@layout/fragment_game_won" >
         <action
             android:id="@+id/action_gameWonFragment_to_gameFragment"
-            app:destination="@id/radioButtonQuizFragment" />
+            app:destination="@id/radioButtonQuizFragment"
+            app:popUpTo="@id/titleFragment2" />
         <argument
             android:name="numQuestions"
             app:argType="integer" />
@@ -67,7 +72,11 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_gameWonFragment_to_editTextQuizFragment2"
-            app:destination="@id/editTextQuizFragment" />
+            app:destination="@id/editTextQuizFragment"
+            app:popUpTo="@id/titleFragment2" />
+        <argument
+            android:name="quizFrom"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"

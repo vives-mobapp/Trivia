@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.android.navigation.databinding.FragmentEdittextquizBinding
 import com.example.android.navigation.databinding.FragmentRadiobuttonquizBinding
 
@@ -44,6 +45,8 @@ class RadioButtonQuizFragment : QuizFragment() {
 
         // Bind this fragment class to the layout
         binding.game = this
+        val nav = findNavController()
+        restartTimer()
 
         // Set the onClickListener for the submitButton
         binding.submitButton.setOnClickListener @Suppress("UNUSED_ANONYMOUS_PARAMETER")
@@ -53,13 +56,13 @@ class RadioButtonQuizFragment : QuizFragment() {
         return binding.root
     }
 
-
     protected fun handleCheck(view: View) {
         MainActivity.Scores.radio_score = questionIndex
-
         val checkedId = binding.questionRadioGroup.checkedRadioButtonId
         // Do nothing if nothing is checked (id == -1)
         if (-1 != checkedId) {
+            restartTimer()
+
             var answerIndex = 0
             when (checkedId) {
                 R.id.secondAnswerRadioButton -> answerIndex = 1
@@ -71,18 +74,32 @@ class RadioButtonQuizFragment : QuizFragment() {
             if (answers[answerIndex] == currentQuestion.answers[0]) {
                 questionIndex++
                 // Advance to the next question
+                MainActivity.Scores.radio_score = questionIndex
                 if (questionIndex < numQuestions) {
                     currentQuestion = questions[questionIndex]
                     setQuestion()
                     binding.invalidateAll()
                 } else {
                     // We've won!  Navigate to the gameWonFragment.
-                    view.findNavController().navigate(RadioButtonQuizFragmentDirections.actionGameFragmentToGameWonFragment(numQuestions, questionIndex))
+                    view.findNavController().navigate(RadioButtonQuizFragmentDirections.actionGameFragmentToGameWonFragment(numQuestions, questionIndex, QuizFragment.Names.radiobutton))
                 }
             } else {
                 // Game over! A wrong answer sends us to the gameOverFragment.
-                view.findNavController().navigate(R.id.action_gameFragment_to_gameOverFragment2)
+                lost()
             }
         }
+    }
+
+    fun lost() {
+        findNavController().navigate(RadioButtonQuizFragmentDirections.actionGameFragmentToGameOverFragment2(QuizFragment.Names.radiobutton))
+    }
+
+    fun restartTimer() {
+        if (timer != null) {
+            timer?.stopTimer()
+        }
+        timer = Timer(10, lifecycle, binding.timerTextView,  Runnable {
+            lost()
+        })
     }
 }

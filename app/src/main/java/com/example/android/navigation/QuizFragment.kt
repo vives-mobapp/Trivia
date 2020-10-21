@@ -4,12 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 
 open class QuizFragment : Fragment() {
+
+    companion object Names {
+        val radiobutton = "radiobutton"
+        val edittext = "edittext"
+    }
+
+    private val TIMER = "timer"
+
     data class Question(
             val text: String,
             val answers: List<String>)
@@ -40,6 +49,8 @@ open class QuizFragment : Fragment() {
                     answers = listOf("<layout>", "<binding>", "<data-binding>", "<dbinding>"))
     )
 
+    var timer: Timer? = null
+
     lateinit var currentQuestion: Question
     lateinit var answers: MutableList<String>
     protected var questionIndex = 0
@@ -52,6 +63,19 @@ open class QuizFragment : Fragment() {
         setQuestion()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (savedInstanceState != null && timer != null) {
+            timer?.secondsCount = savedInstanceState.getInt(TIMER)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(TIMER, timer?.secondsCount!!)
+    }
+
     // Sets the question and randomizes the answers.  This only changes the data, not the UI.
     // Calling invalidateAll on the FragmentGameBinding updates the data.
     protected fun setQuestion() {
@@ -62,5 +86,7 @@ open class QuizFragment : Fragment() {
         answers.shuffle()
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_android_trivia_question, questionIndex + 1, numQuestions)
     }
+
+
 
 }

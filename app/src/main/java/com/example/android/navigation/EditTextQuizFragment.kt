@@ -16,14 +16,18 @@
 
 package com.example.android.navigation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.android.navigation.databinding.FragmentEdittextquizBinding
 
 class EditTextQuizFragment : QuizFragment() {
@@ -42,6 +46,8 @@ class EditTextQuizFragment : QuizFragment() {
 
         // Bind this fragment class to the layout
         binding.game = this
+        val nav = findNavController()
+        restartTimer()
 
         // Set the onClickListener for the submitButton
         binding.submitButton.setOnClickListener @Suppress("UNUSED_ANONYMOUS_PARAMETER")
@@ -53,11 +59,17 @@ class EditTextQuizFragment : QuizFragment() {
 
 
     protected fun handleCheck(view: View) {
+        // Hide keyboard.
+        val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+
         MainActivity.Scores.edittext_score = questionIndex
 
         if (!binding.quizEditText.text.isBlank()) {
-            if (binding.quizEditText.text.trim().equals(currentQuestion.answers[0])) {
+            restartTimer()
+            if (binding.quizEditText.text.trim().toString().equals(currentQuestion.answers[0])) {
                 questionIndex++
+                MainActivity.Scores.edittext_score = questionIndex
                 // Advance to the next question
                 if (questionIndex < numQuestions) {
                     currentQuestion = questions[questionIndex]
@@ -65,13 +77,23 @@ class EditTextQuizFragment : QuizFragment() {
                     binding.invalidateAll()
                 } else {
                     // We've won!  Navigate to the gameWonFragment.
-                    view.findNavController().navigate(R.id.action_editTextQuizFragment2_to_gameWonFragment)
+                    view.findNavController().navigate(EditTextQuizFragmentDirections.actionEditTextQuizFragment2ToGameWonFragment(numQuestions, questionIndex, QuizFragment.Names.edittext))
                 }
             } else {
-                view.findNavController().navigate(R.id.action_editTextQuizFragment2_to_gameOverFragment2)
+                lost()
             }
         } else {
             Toast.makeText(this.context, "No blank answers allowed.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun lost() {
+        findNavController().navigate(EditTextQuizFragmentDirections.actionEditTextQuizFragment2ToGameOverFragment2(QuizFragment.Names.edittext))
+    }
+
+    fun restartTimer() {
+        timer = Timer(15, lifecycle, binding.timerTextView,  Runnable {
+            lost()
+        })
     }
 }

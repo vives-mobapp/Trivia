@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
 
+    // TODO: put in viewmodel
     companion object Scores {
         var radio_score = -1
         var radio_max = 0
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         drawerLayout = binding.drawerLayout
 
+        // TODO: change
         if (savedInstanceState != null) {
             Scores.radio_score = savedInstanceState.getInt(RADIO_QUIZ)
             Scores.edittext_score = savedInstanceState.getInt(EDITTEXT_QUIZ)
@@ -57,6 +59,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+
+        // TODO: change
         outState.putInt(RADIO_QUIZ, Scores.radio_score)
         outState.putInt(EDITTEXT_QUIZ, Scores.edittext_score)
     }

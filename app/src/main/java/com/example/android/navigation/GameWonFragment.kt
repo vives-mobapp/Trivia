@@ -34,7 +34,11 @@ class GameWonFragment : Fragment() {
         val binding: FragmentGameWonBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_game_won, container, false)
         binding.nextMatchButton.setOnClickListener { view: View ->
-            view.findNavController().navigate(R.id.action_gameWonFragment_to_gameFragment)
+            val args = GameOverFragmentArgs.fromBundle(arguments!!)
+            when (args.quizFrom) {
+                QuizFragment.Names.radiobutton -> view.findNavController().navigate(GameWonFragmentDirections.actionGameWonFragmentToGameFragment())
+                QuizFragment.Names.edittext -> view.findNavController().navigate(GameWonFragmentDirections.actionGameWonFragmentToEditTextQuizFragment2())
+            }
         }
         setHasOptionsMenu(true)
         return binding.root
