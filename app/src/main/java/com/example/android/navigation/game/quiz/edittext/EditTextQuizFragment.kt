@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.navigation
+package com.example.android.navigation.game.quiz.edittext
 
 import android.content.Context
 import android.os.Bundle
@@ -22,90 +22,65 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.android.navigation.R
 import com.example.android.navigation.databinding.FragmentEdittextquizBinding
+import com.example.android.navigation.game.quiz.QuizFragment
+import com.example.android.navigation.game.quiz.radio.RadioButtonQuizViewModel
 
-class EditTextQuizFragment : QuizFragment() {
+
+class EditTextQuizFragment : QuizFragment(Name.EDITTEXT) {
 
     private lateinit var binding : FragmentEdittextquizBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        MainActivity.Scores.edittext_max = numQuestions
-        randomizeQuestions()
-
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate<FragmentEdittextquizBinding>(
+        binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_edittextquiz, container, false)
 
-        // Bind this fragment class to the layout
-        binding.game = this
-        val nav = findNavController()
-        restartTimer()
+        viewModel = ViewModelProvider(this).get(RadioButtonQuizViewModel::class.java)
+
+        binding.game = this.viewModel as EditTextQuizViewModel
 
         // Set the onClickListener for the submitButton
         binding.submitButton.setOnClickListener @Suppress("UNUSED_ANONYMOUS_PARAMETER")
         { view: View ->
             handleCheck(view)
         }
+
+        setup()
+
         return binding.root
     }
 
-    fun hideKeyboard() {
+
+    private fun hideKeyboard() {
         // Hide keyboard.
         val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view!!.windowToken, 0)
     }
 
-    // TODO: separate views from data
-    protected fun handleCheck(view: View) {
+    override fun handleCheck(view: View) {
         hideKeyboard()
 
-        MainActivity.Scores.edittext_score = questionIndex
-
         if (!binding.quizEditText.text.isBlank()) {
-            restartTimer()
-            if (binding.quizEditText.text.trim().toString().equals(currentQuestion.answers[0])) {
-                questionIndex++
-                MainActivity.Scores.edittext_score = questionIndex
-                // Advance to the next question
-                if (questionIndex < numQuestions) {
-                    currentQuestion = questions[questionIndex]
-                    setQuestion()
-                    binding.invalidateAll()
-                } else {
-                    // We've won!  Navigate to the gameWonFragment.
-                    hideKeyboard()
-                    view.findNavController().navigate(EditTextQuizFragmentDirections.actionEditTextQuizFragment2ToGameWonFragment(numQuestions, questionIndex, QuizFragment.Names.edittext))
-                }
-            } else {
-                lost()
-            }
+            viewModel.handleAnswer(binding.quizEditText.text.toString())
         } else {
             Toast.makeText(this.context, "No blank answers allowed.", Toast.LENGTH_SHORT).show()
         }
         binding.quizEditText.text.clear()
-
     }
 
-    fun lost() {
-        hideKeyboard()
-        findNavController().navigate(EditTextQuizFragmentDirections.actionEditTextQuizFragment2ToGameOverFragment2(QuizFragment.Names.edittext))
+    override fun lost() {
+        findNavController().navigate(EditTextQuizFragmentDirections.actionEditTextQuizFragment2ToGameOverFragment2(name))
     }
 
-    // Kan in super klasse geplaatst worden want code is exact aan die in radiobuttonquizfragment. Maar is nu niet nodig.
-    fun restartTimer() {
-        if (timer != null) {
-            timer?.stopTimer()
-        }
-        timer = Timer(15, lifecycle, binding.timerTextView,  Runnable {
-            lost()
-        })
+    override fun won() {
+        findNavController().navigate(EditTextQuizFragmentDirections.actionEditTextQuizFragment2ToGameWonFragment(name))
     }
 }

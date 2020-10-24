@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.navigation
+package com.example.android.navigation.game.endgame
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,9 +23,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.example.android.navigation.game.endgame.GameOverFragmentArgs
+import com.example.android.navigation.game.endgame.GameOverFragmentDirections
+import com.example.android.navigation.R
 import com.example.android.navigation.databinding.FragmentGameOverBinding
+import com.example.android.navigation.game.quiz.QuizFragment
 
-class GameOverFragment : Fragment() {
+class GameOverFragment : GameEndFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -34,8 +38,8 @@ class GameOverFragment : Fragment() {
         binding.tryAgainButton.setOnClickListener { view: View ->
             val args = GameOverFragmentArgs.fromBundle(arguments!!)
             when (args.quizFrom) {
-                QuizFragment.Names.radiobutton -> view.findNavController().navigate(GameOverFragmentDirections.actionGameOverFragment2ToGameFragment())
-                QuizFragment.Names.edittext -> view.findNavController().navigate(GameOverFragmentDirections.actionGameOverFragment2ToEditTextQuizFragment2())
+                QuizFragment.Name.RADIO -> view.findNavController().navigate(GameOverFragmentDirections.actionGameOverFragment2ToGameFragment())
+                QuizFragment.Name.EDITTEXT -> view.findNavController().navigate(GameOverFragmentDirections.actionGameOverFragment2ToEditTextQuizFragment2())
             }
         }
         return binding.root

@@ -20,25 +20,18 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.android.navigation.databinding.ActivityMainBinding
+import com.example.android.navigation.game.quiz.QuizFragment
+import com.example.android.navigation.game.quiz.QuizViewModel
+import com.example.android.navigation.game.quiz.edittext.EditTextQuizViewModel
+import com.example.android.navigation.game.quiz.radio.RadioButtonQuizViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    var RADIO_QUIZ = "radio_quiz"
-    var EDITTEXT_QUIZ = "edittext_quiz"
-    var SCORE = "score"
-
     private lateinit var drawerLayout: DrawerLayout
-
-    // TODO: put in viewmodel
-    companion object Scores {
-        var radio_score = -1
-        var radio_max = 0
-        var edittext_score = -1
-        var edittext_max = 0
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,23 +39,9 @@ class MainActivity : AppCompatActivity() {
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         drawerLayout = binding.drawerLayout
 
-        // TODO: change
-        if (savedInstanceState != null) {
-            Scores.radio_score = savedInstanceState.getInt(RADIO_QUIZ)
-            Scores.edittext_score = savedInstanceState.getInt(EDITTEXT_QUIZ)
-        }
-
         val navController = findNavController(R.id.myNavHostFragment)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        // TODO: change
-        outState.putInt(RADIO_QUIZ, Scores.radio_score)
-        outState.putInt(EDITTEXT_QUIZ, Scores.edittext_score)
     }
 
     override fun onSupportNavigateUp(): Boolean {

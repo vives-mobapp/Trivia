@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.navigation
+package com.example.android.navigation.tools
 
 import android.os.Handler
 import android.util.Log
@@ -39,13 +39,10 @@ import androidx.navigation.NavController
  * https://developer.android.com/guide/components/processes-and-threads
  *
  */
-class Timer(start: Int, lifecycle: Lifecycle, view: TextView, stopRunnable: Runnable) : LifecycleObserver {
+class Timer(start: Int) {
 
     // The number of seconds counted since the timer started
     var secondsCount = start
-    var view = view
-    var stopRunnable = stopRunnable
-
 
     /**
      * [Handler] is a class meant to process a queue of messages (known as [android.os.Message]s)
@@ -54,11 +51,6 @@ class Timer(start: Int, lifecycle: Lifecycle, view: TextView, stopRunnable: Runn
     private var handler = Handler()
     private lateinit var runnable: Runnable
 
-    init {
-        lifecycle.addObserver(this)
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun startTimer() {
         // Create the runnable action, which prints out a log and increments the seconds counter
         runnable = Runnable {
@@ -71,13 +63,7 @@ class Timer(start: Int, lifecycle: Lifecycle, view: TextView, stopRunnable: Runn
 
             if (secondsCount <= 0) {
                 stopTimer()
-
-                // TODO: remove stopRunnable and use LiveData instead!
-                stopRunnable.run()
             }
-
-            // TODO: remove view reference
-            view.text = secondsCount.toString()
         }
 
         // This is what initially starts the timer
@@ -87,7 +73,6 @@ class Timer(start: Int, lifecycle: Lifecycle, view: TextView, stopRunnable: Runn
         // In this case, no looper is defined, and it defaults to the main or UI thread.
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun stopTimer() {
         // Removes all pending posts of runnable from the handler's queue, effectively stopping the
         // timer

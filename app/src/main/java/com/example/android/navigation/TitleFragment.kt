@@ -4,12 +4,20 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.android.navigation.databinding.FragmentTitleBinding
+import com.example.android.navigation.game.quiz.QuizFragment
+import com.example.android.navigation.game.quiz.QuizViewModel
+import com.example.android.navigation.game.quiz.edittext.EditTextQuizViewModel
+import com.example.android.navigation.game.quiz.radio.RadioButtonQuizViewModel
 
 class TitleFragment : Fragment() {
+
+    lateinit var viewModels : MutableMap<QuizFragment.Name, QuizViewModel>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                    savedInstanceState: Bundle?): View? {
@@ -17,8 +25,18 @@ class TitleFragment : Fragment() {
         val binding: FragmentTitleBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_title, container, false)
         setHasOptionsMenu(true)
 
-        binding.q1ScoreTv.text = formatScore("Radio Button", MainActivity.Scores.radio_score, MainActivity.Scores.radio_max)
-        binding.q2ScoreTv.text = formatScore("Edit Text", MainActivity.Scores.edittext_score, MainActivity.Scores.edittext_max)
+        viewModels = mutableMapOf(
+                QuizFragment.Name.RADIO to ViewModelProvider(this).get(RadioButtonQuizViewModel::class.java),
+                QuizFragment.Name.EDITTEXT to ViewModelProvider(this).get(EditTextQuizViewModel::class.java)
+        )
+
+        viewModels[QuizFragment.Name.RADIO]?.score?.observe(viewLifecycleOwner, Observer { newScore ->
+            binding.q1ScoreTv.text = formatScore("Radio Button", newScore, viewModels[QuizFragment.Name.RADIO]!!.numQuestions)
+        })
+
+        viewModels[QuizFragment.Name.EDITTEXT]?.score?.observe(viewLifecycleOwner, Observer { newScore ->
+            binding.q2ScoreTv.text = formatScore("Edit Text", newScore, viewModels[QuizFragment.Name.EDITTEXT]!!.numQuestions)
+        })
 
         return binding.root
     }
