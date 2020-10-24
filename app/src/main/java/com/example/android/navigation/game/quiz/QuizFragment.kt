@@ -16,6 +16,7 @@ abstract class QuizFragment(val name: Name) : Fragment() {
     }
 
     protected lateinit var viewModel: QuizViewModel
+
     protected fun setup() {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_android_trivia_question, viewModel.questionIndex + 1, viewModel.numQuestions)
 
@@ -29,9 +30,18 @@ abstract class QuizFragment(val name: Name) : Fragment() {
         })
 
         viewModel.randomizeQuestions()
+        viewModel.restartTimer()
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.timer?.resumeTimer()
+    }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.timer?.stopTimer()
+    }
 
     abstract fun lost()
 

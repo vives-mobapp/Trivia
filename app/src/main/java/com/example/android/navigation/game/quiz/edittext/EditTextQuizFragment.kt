@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.android.navigation.R
@@ -43,7 +44,9 @@ class EditTextQuizFragment : QuizFragment(Name.EDITTEXT) {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_edittextquiz, container, false)
 
-        viewModel = ViewModelProvider(this).get(RadioButtonQuizViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(EditTextQuizViewModel::class.java)
+
+        setup()
 
         binding.game = this.viewModel as EditTextQuizViewModel
 
@@ -53,11 +56,13 @@ class EditTextQuizFragment : QuizFragment(Name.EDITTEXT) {
             handleCheck(view)
         }
 
-        setup()
+        viewModel.timer?.secondsCount?.observe(viewLifecycleOwner, Observer { secondsCount ->
+            if (secondsCount <= 0) lost()
+            binding.timerTextView.text = secondsCount.toString()
+        })
 
         return binding.root
     }
-
 
     private fun hideKeyboard() {
         // Hide keyboard.

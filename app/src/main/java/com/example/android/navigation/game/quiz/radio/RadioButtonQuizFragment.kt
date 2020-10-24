@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.android.navigation.R
@@ -41,13 +42,18 @@ class RadioButtonQuizFragment : QuizFragment(Name.RADIO) {
         viewModel = ViewModelProvider(this).get(RadioButtonQuizViewModel::class.java)
         binding.game = this.viewModel as RadioButtonQuizViewModel
 
+        setup()
+
         // Set the onClickListener for the submitButton
         binding.submitButton.setOnClickListener @Suppress("UNUSED_ANONYMOUS_PARAMETER")
         { view: View ->
             handleCheck(view)
         }
 
-        setup()
+        viewModel.timer?.secondsCount?.observe(viewLifecycleOwner, Observer { secondsCount ->
+            if (secondsCount <= 0) lost()
+            binding.timerTextView.text = secondsCount.toString()
+        })
 
         return binding.root
     }
