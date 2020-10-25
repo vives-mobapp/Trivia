@@ -20,6 +20,8 @@ abstract class QuizFragment(val name: Name) : Fragment() {
     protected fun setup() {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_android_trivia_question, viewModel.questionIndex + 1, viewModel.numQuestions)
 
+        viewModel.restartQuiz()
+
         // Act on game state change using GameState and abstract functions for won and lost.
         viewModel.gameState.observe(this, Observer { gameState ->
             when (gameState) {

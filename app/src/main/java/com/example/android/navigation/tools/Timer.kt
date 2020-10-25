@@ -37,7 +37,7 @@ import androidx.navigation.NavController
  * https://developer.android.com/guide/components/processes-and-threads
  *
  */
-class Timer(start: Int) {
+class Timer(private val start: Int) {
 
     private var handler = Handler()
     private var isRunning = false
@@ -46,16 +46,16 @@ class Timer(start: Int) {
     lateinit var timerRunnable : Runnable
 
     init {
+        this.timerRunnable = Runnable {
+            secondsCount.value = secondsCount.value?.minus(1)
+            Log.i("Timer","Timer is at : $secondsCount.value")
+            handler.postDelayed(timerRunnable, 1000)
+        }
         secondsCount.value = start
     }
 
     fun startTimer() {
-        this.timerRunnable = Runnable {
-            secondsCount.value = secondsCount.value?.minus(1)
-            Log.i("Timer","Timer is at : $secondsCount")
-            handler.postDelayed(timerRunnable, 1000)
-        }
-
+        secondsCount.value = start
         resumeTimer()
     }
 

@@ -13,14 +13,14 @@ abstract class QuizViewModel(var questions: MutableList<Question>, var timerSeco
         LOST, WON, ONGOING
     }
 
-    var timer: Timer? = null
+    val timer = Timer(timerSeconds)
 
     // TODO: encapsulate
     var gameState = MutableLiveData<GameState>()
     var currentQuestion = MutableLiveData<Question>()
     var score = MutableLiveData<Int>()
-
-    lateinit var answers: MutableList<String>
+    var answers = MutableLiveData<MutableList<String>>()
+    var hasPlayed = MutableLiveData<Boolean>()
 
     var questionIndex = 0
         protected set
@@ -28,8 +28,13 @@ abstract class QuizViewModel(var questions: MutableList<Question>, var timerSeco
     val numQuestions = Math.min((questions.size + 1) / 2, 3)
 
     init {
+        score.value = -1
+    }
+
+    fun restartQuiz() {
         gameState.value = GameState.ONGOING
         score.value = 0
+        questionIndex = 0
     }
 
     // randomize the questions and set the first question
@@ -44,20 +49,19 @@ abstract class QuizViewModel(var questions: MutableList<Question>, var timerSeco
     fun setQuestion() {
         currentQuestion.value = this.questions[questionIndex]
         // randomize the answers into a copy of the array
-        answers = this.currentQuestion.value!!.answers.toMutableList()
+        answers.value = this.currentQuestion.value!!.answers.toMutableList()
         // and shuffle them
-        answers.shuffle()
+        answers.value?.shuffle()
     }
 
     fun restartTimer() {
-        if (timer != null) {
-            timer?.stopTimer()
-        }
-        timer = Timer(timerSeconds)
-        timer!!.startTimer()
+        timer.stopTimer()
+        timer.startTimer()
     }
 
     fun handleAnswer(answer: String) {
+        hasPlayed.value = true
+        restartTimer()
         if (answer.trim() == currentQuestion.value?.answers?.get(0)) {
             questionIndex++
             score.value = score.value?.plus(1)

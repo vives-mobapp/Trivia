@@ -39,7 +39,7 @@ class RadioButtonQuizFragment : QuizFragment(Name.RADIO) {
         binding = DataBindingUtil.inflate<FragmentRadiobuttonquizBinding>(
                 inflater, R.layout.fragment_radiobuttonquiz, container, false)
 
-        viewModel = ViewModelProvider(this).get(RadioButtonQuizViewModel::class.java)
+        viewModel = ViewModelProvider(activity!!).get(RadioButtonQuizViewModel::class.java)
         binding.game = this.viewModel as RadioButtonQuizViewModel
 
         setup()
@@ -50,10 +50,12 @@ class RadioButtonQuizFragment : QuizFragment(Name.RADIO) {
             handleCheck(view)
         }
 
-        viewModel.timer?.secondsCount?.observe(viewLifecycleOwner, Observer { secondsCount ->
+        viewModel.timer.secondsCount.observe(viewLifecycleOwner, Observer { secondsCount ->
             if (secondsCount <= 0) lost()
             binding.timerTextView.text = secondsCount.toString()
         })
+
+        binding.setLifecycleOwner(this)
 
         return binding.root
     }
@@ -63,7 +65,6 @@ class RadioButtonQuizFragment : QuizFragment(Name.RADIO) {
 
         // Do nothing if nothing is checked (id == -1)
         if (-1 != checkedId) {
-            viewModel.restartTimer()
 
             // Get indices.
             var answerIndex = 0
@@ -74,7 +75,7 @@ class RadioButtonQuizFragment : QuizFragment(Name.RADIO) {
             }
 
             // Let viewmodel decide if its the correct answer.
-            viewModel.handleAnswer(viewModel.answers[answerIndex])
+            viewModel.handleAnswer(viewModel.answers.value!![answerIndex])
         }
     }
 

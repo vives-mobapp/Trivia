@@ -44,7 +44,7 @@ class EditTextQuizFragment : QuizFragment(Name.EDITTEXT) {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_edittextquiz, container, false)
 
-        viewModel = ViewModelProvider(this).get(EditTextQuizViewModel::class.java)
+        viewModel = ViewModelProvider(activity!!).get(EditTextQuizViewModel::class.java)
 
         setup()
 
@@ -56,10 +56,12 @@ class EditTextQuizFragment : QuizFragment(Name.EDITTEXT) {
             handleCheck(view)
         }
 
-        viewModel.timer?.secondsCount?.observe(viewLifecycleOwner, Observer { secondsCount ->
+        viewModel.timer.secondsCount.observe(viewLifecycleOwner, Observer { secondsCount ->
             if (secondsCount <= 0) lost()
             binding.timerTextView.text = secondsCount.toString()
         })
+
+        binding.setLifecycleOwner(this)
 
         return binding.root
     }

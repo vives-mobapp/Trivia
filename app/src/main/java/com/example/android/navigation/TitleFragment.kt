@@ -26,8 +26,8 @@ class TitleFragment : Fragment() {
         setHasOptionsMenu(true)
 
         viewModels = mutableMapOf(
-                QuizFragment.Name.RADIO to ViewModelProvider(this).get(RadioButtonQuizViewModel::class.java),
-                QuizFragment.Name.EDITTEXT to ViewModelProvider(this).get(EditTextQuizViewModel::class.java)
+                QuizFragment.Name.RADIO to ViewModelProvider(activity!!).get(RadioButtonQuizViewModel::class.java),
+                QuizFragment.Name.EDITTEXT to ViewModelProvider(activity!!).get(EditTextQuizViewModel::class.java)
         )
 
         viewModels[QuizFragment.Name.RADIO]?.score?.observe(viewLifecycleOwner, Observer { newScore ->
