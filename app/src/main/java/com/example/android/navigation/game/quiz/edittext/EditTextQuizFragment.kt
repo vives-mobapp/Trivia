@@ -30,7 +30,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.android.navigation.R
 import com.example.android.navigation.databinding.FragmentEdittextquizBinding
 import com.example.android.navigation.game.quiz.QuizFragment
-import com.example.android.navigation.game.quiz.radio.RadioButtonQuizViewModel
 
 
 class EditTextQuizFragment : QuizFragment(Name.EDITTEXT) {
@@ -57,11 +56,10 @@ class EditTextQuizFragment : QuizFragment(Name.EDITTEXT) {
         }
 
         viewModel.timer.secondsCount.observe(viewLifecycleOwner, Observer { secondsCount ->
-            if (secondsCount <= 0) lost()
             binding.timerTextView.text = secondsCount.toString()
         })
 
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
 
         return binding.root
     }

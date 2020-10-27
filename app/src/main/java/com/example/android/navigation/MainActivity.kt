@@ -20,14 +20,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.android.navigation.databinding.ActivityMainBinding
-import com.example.android.navigation.game.quiz.QuizFragment
-import com.example.android.navigation.game.quiz.QuizViewModel
-import com.example.android.navigation.game.quiz.edittext.EditTextQuizViewModel
-import com.example.android.navigation.game.quiz.radio.RadioButtonQuizViewModel
 
 class MainActivity : AppCompatActivity() {
 

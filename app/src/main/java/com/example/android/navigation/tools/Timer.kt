@@ -18,9 +18,7 @@ package com.example.android.navigation.tools
 
 import android.os.Handler
 import android.util.Log
-import android.widget.TextView
-import androidx.lifecycle.*
-import androidx.navigation.NavController
+import androidx.lifecycle.MutableLiveData
 
 /**
  * This is a class representing a timer that you can start or stop. The secondsCount outputs a count of
@@ -48,7 +46,6 @@ class Timer(private val start: Int) {
     init {
         this.timerRunnable = Runnable {
             secondsCount.value = secondsCount.value?.minus(1)
-            Log.i("Timer","Timer is at : $secondsCount.value")
             handler.postDelayed(timerRunnable, 1000)
         }
         secondsCount.value = start

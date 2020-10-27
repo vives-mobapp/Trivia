@@ -50,12 +50,12 @@ class RadioButtonQuizFragment : QuizFragment(Name.RADIO) {
             handleCheck(view)
         }
 
+        // TODO:
         viewModel.timer.secondsCount.observe(viewLifecycleOwner, Observer { secondsCount ->
-            if (secondsCount <= 0) lost()
             binding.timerTextView.text = secondsCount.toString()
         })
 
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
 
         return binding.root
     }

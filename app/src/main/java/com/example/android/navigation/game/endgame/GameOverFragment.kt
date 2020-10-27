@@ -21,10 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.example.android.navigation.game.endgame.GameOverFragmentArgs
-import com.example.android.navigation.game.endgame.GameOverFragmentDirections
 import com.example.android.navigation.R
 import com.example.android.navigation.databinding.FragmentGameOverBinding
 import com.example.android.navigation.game.quiz.QuizFragment
